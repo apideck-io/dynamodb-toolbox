@@ -55,7 +55,7 @@ class Entity {
       
       // If an entity tracking field is enabled, add the attributes, alias and the default
       if (table.Table.entityField) {
-        this.schema.attributes[table.Table.entityField] = { type: 'string', alias: this._etAlias, default: this.name }
+        this.schema.attributes[table.Table.entityField] = { type: 'string', hidden: this.typeHidden, alias: this._etAlias, default: this.name }
         this.defaults[table.Table.entityField] = this.name
         this.schema.attributes[this._etAlias] = { type: 'string', map: table.Table.entityField, default: this.name }
         this.defaults[this._etAlias] = this.name

@@ -345,6 +345,38 @@ describe('Entity creation', ()=> {
     expect(TestEntity._etAlias).toBe('entity')
   }) // creates entity w/ table
 
+  it('creates entity w/ table w/ overriden type alias', async () => {
+  
+    // Create basic table
+    const TestTable = new Table({
+      name: 'test-table',
+      partitionKey: 'pk',
+      DocumentClient
+    })
+
+    // Create basic entity
+    const TestEntity = new Entity({
+      name: 'TestEnt',
+      typeAlias: 'type',
+      typeHidden: true,
+      attributes: {
+        pk: { partitionKey: true }
+      },
+      table: TestTable,
+      timestamps: false
+    })
+
+    expect(TestEntity._etAlias).toBe('type')
+    expect(TestEntity.schema.attributes._et.alias).toBe('type')
+    expect(TestEntity.schema.attributes._et.hidden).toBe(true)
+    
+    expect(TestEntity.parse({
+      _et: 'TestEnt',
+      pk: 'test',
+    })).toEqual({
+      pk: 'test',
+    })
+  })
 
   it('creates entity composite key delimiter, prefix and suffix', async () => {
   
